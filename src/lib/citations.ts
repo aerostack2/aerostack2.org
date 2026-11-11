@@ -106,17 +106,22 @@ function fail(what: string, error: unknown) {
 
 async function fetchCitations(): Promise<Citations> {
   try {
+    // The google_scholar_author engine hangs, so search for the title instead.
     const data = await serpapi({
-      engine: "google_scholar_author",
-      view_op: "view_citation",
-      citation_id: paper.scholarId,
+      engine: "google_scholar",
+      q: paper.title,
       hl: "en",
     });
-    const citedBy = data?.citation?.total_citations?.cited_by;
+    // biome-ignore lint/suspicious/noExplicitAny: SerpApi's JSON is untyped.
+    const results: any[] = data?.organic_results ?? [];
+    const match = results.find(
+      (r) => r.title?.toLowerCase() === paper.title.toLowerCase(),
+    );
+    const citedBy = match?.inline_links?.cited_by;
     const count = Number(citedBy?.total);
     if (!Number.isFinite(count) || count <= 0) throw new Error("no count");
     const link = typeof citedBy.link === "string" ? citedBy.link : scholarUrl;
-    const citesId = new URL(link).searchParams.get("cites") ?? undefined;
+    const citesId = citedBy.cites_id ?? undefined;
     return { count, link, citesId };
   } catch (error) {
     fail(
