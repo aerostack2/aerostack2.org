@@ -94,10 +94,10 @@ const MOBILE: Layout = {
   className: "sm:hidden",
 };
 
-type Drone = (typeof DRONES)[number];
+type Drone = { items: Item[] };
 
 /** The drone's items, as SVG. */
-function Drawing({ drone, glowId }: { drone: Drone; glowId: string }) {
+export function Drawing({ drone, glowId }: { drone: Drone; glowId: string }) {
   return drone.items.map((item: Item, k) => {
     if (isGlow(item))
       return (
@@ -110,7 +110,7 @@ function Drawing({ drone, glowId }: { drone: Drone; glowId: string }) {
       const d = blade(item.r, item.turn);
       return (
         // biome-ignore lint/suspicious/noArrayIndexKey: a fixed drawing
-        <g key={k} transform={planeMatrix(item.rotor)}>
+        <g key={k} transform={planeMatrix(item.rotor)} className={item.cls}>
           <g
             className="hero-spin"
             style={{ "--turn": item.turn } as CSSProperties}

@@ -24,7 +24,8 @@ import {
   Z,
 } from "../figures/line-art";
 
-export type Rotor = { rotor: V; r: number; turn: 1 | -1 };
+/** `cls` lets a page single out a rotor, as the 404 does to knock two off. */
+export type Rotor = { rotor: V; r: number; turn: 1 | -1; cls?: string };
 export type Glow = { glow: V; r: number };
 export type Item = El | Rotor | Glow;
 export const isRotor = (i: Item): i is Rotor => "rotor" in i;

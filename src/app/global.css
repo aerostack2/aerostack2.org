@@ -513,6 +513,293 @@ html > body[data-scroll-locked] {
   }
 }
 
+/* The 404 (components/home/crash-art.tsx): the hero's PX4 flies a loop,
+   sputters, and crashes upside down at x 720 on the ground at y 280. Its
+   resting pose is the base transform, so reduced motion shows the wreck. */
+.crash-art {
+  --crash-fault: #ef4444;
+}
+.crash-art .crash-drone {
+  transform: translate(720px, 242px) rotate(165deg);
+  animation: crash-fly var(--cycle) infinite;
+}
+.crash-art .hi {
+  stroke: var(--hairline-hi);
+  animation: crash-lit var(--cycle) infinite;
+}
+.crash-art .hero-glow {
+  opacity: 0;
+  animation: crash-glow var(--cycle) infinite;
+}
+.crash-art .hero-spin {
+  animation: crash-spin var(--cycle) infinite;
+}
+.crash-art .crash-shadow {
+  fill: var(--color-fd-foreground);
+  opacity: 0.08;
+  transform: translate(720px, 280px);
+  animation: crash-shadow var(--cycle) infinite;
+}
+.crash-art .crash-burst {
+  opacity: 0;
+  animation: crash-burst var(--cycle) infinite;
+}
+.crash-art .crash-burst path {
+  stroke: var(--crash-fault);
+  stroke-width: 1.5;
+}
+.crash-art circle.crash-smoke {
+  fill: none;
+  stroke: var(--hairline-mid);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: crash-smoke var(--cycle) var(--k) infinite;
+}
+@keyframes crash-fly {
+  0% {
+    transform: translate(-120px, 120px) rotate(10deg);
+  }
+  12% {
+    transform: translate(220px, 70px) rotate(6deg);
+  }
+  24% {
+    transform: translate(470px, 140px) rotate(-4deg);
+  }
+  34% {
+    transform: translate(330px, 90px) rotate(-10deg);
+  }
+  44% {
+    transform: translate(560px, 60px) rotate(8deg);
+  }
+  50% {
+    transform: translate(640px, 90px) rotate(-14deg);
+  }
+  53% {
+    transform: translate(660px, 70px) rotate(22deg);
+  }
+  56% {
+    transform: translate(690px, 100px) rotate(-30deg);
+    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+  }
+  60% {
+    transform: translate(705px, 242px) rotate(120deg);
+    animation-timing-function: ease-out;
+  }
+  63% {
+    transform: translate(714px, 214px) rotate(150deg);
+    animation-timing-function: ease-in;
+  }
+  66%,
+  100% {
+    transform: translate(720px, 242px) rotate(165deg);
+  }
+}
+@keyframes crash-lit {
+  0%,
+  49% {
+    stroke: var(--hairline-hi);
+  }
+  50%,
+  53%,
+  56%,
+  66% {
+    stroke: var(--crash-fault);
+  }
+  51.5%,
+  54.5% {
+    stroke: var(--hairline-hi);
+  }
+  80%,
+  100% {
+    stroke: var(--hairline-edge);
+  }
+}
+@keyframes crash-glow {
+  0%,
+  50% {
+    opacity: 0.8;
+  }
+  60%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes crash-spin {
+  0% {
+    transform: rotate(0deg);
+    animation-timing-function: linear;
+  }
+  50% {
+    transform: rotate(calc(var(--turn) * 9000deg));
+    animation-timing-function: ease-out;
+  }
+  62%,
+  100% {
+    transform: rotate(calc(var(--turn) * 9900deg));
+  }
+}
+@keyframes crash-shadow {
+  0% {
+    transform: translate(-120px, 280px) scale(0.5);
+  }
+  12% {
+    transform: translate(220px, 280px) scale(0.55);
+  }
+  24% {
+    transform: translate(470px, 280px) scale(0.65);
+  }
+  34% {
+    transform: translate(330px, 280px) scale(0.55);
+  }
+  44% {
+    transform: translate(560px, 280px) scale(0.5);
+  }
+  56% {
+    transform: translate(690px, 280px) scale(0.6);
+    animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
+  }
+  60%,
+  100% {
+    transform: translate(720px, 280px) scale(1);
+  }
+}
+@keyframes crash-burst {
+  0%,
+  59.5% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(0.6);
+  }
+  68%,
+  100% {
+    opacity: 0;
+    transform: scale(1.3);
+  }
+}
+@keyframes crash-smoke {
+  0%,
+  61% {
+    opacity: 0;
+    transform: translateY(0) scale(0.6);
+  }
+  66% {
+    opacity: 0.7;
+  }
+  92%,
+  100% {
+    opacity: 0;
+    transform: translateY(-90px) scale(1.6);
+  }
+}
+/* Two props break off at impact: the drone's own copies vanish, and loose
+   ones arc away, bounce and lie flat. Their base pose is where they land. */
+.crash-art .crash-lost {
+  opacity: 0;
+  animation: crash-lost var(--cycle) infinite;
+}
+.crash-art .crash-prop-a {
+  transform: translate(548px, 277px);
+  animation: crash-prop-a var(--cycle) infinite;
+}
+.crash-art .crash-prop-b {
+  transform: translate(945px, 277px);
+  animation: crash-prop-b var(--cycle) infinite;
+}
+.crash-art .crash-prop-spin {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: crash-prop-spin var(--cycle) infinite;
+}
+@keyframes crash-lost {
+  0%,
+  59.9% {
+    opacity: 1;
+  }
+  60%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes crash-prop-a {
+  0%,
+  59.9% {
+    opacity: 0;
+    transform: translate(705px, 242px);
+  }
+  60% {
+    opacity: 1;
+    transform: translate(705px, 242px);
+    animation-timing-function: cubic-bezier(0.2, 0.6, 0.4, 1);
+  }
+  67% {
+    transform: translate(630px, 110px);
+    animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.4);
+  }
+  74% {
+    transform: translate(560px, 277px);
+    animation-timing-function: ease-out;
+  }
+  77% {
+    transform: translate(553px, 262px);
+    animation-timing-function: ease-in;
+  }
+  80%,
+  100% {
+    opacity: 1;
+    transform: translate(548px, 277px);
+  }
+}
+@keyframes crash-prop-b {
+  0%,
+  60.4% {
+    opacity: 0;
+    transform: translate(712px, 238px);
+  }
+  60.5% {
+    opacity: 1;
+    transform: translate(712px, 238px);
+    animation-timing-function: cubic-bezier(0.2, 0.6, 0.4, 1);
+  }
+  69% {
+    transform: translate(830px, 50px);
+    animation-timing-function: cubic-bezier(0.6, 0, 0.8, 0.4);
+  }
+  78% {
+    transform: translate(930px, 277px);
+    animation-timing-function: ease-out;
+  }
+  81% {
+    transform: translate(939px, 258px);
+    animation-timing-function: ease-in;
+  }
+  84%,
+  100% {
+    opacity: 1;
+    transform: translate(945px, 277px);
+  }
+}
+@keyframes crash-prop-spin {
+  0%,
+  60% {
+    transform: rotate(0deg);
+    animation-timing-function: cubic-bezier(0.1, 0.6, 0.3, 1);
+  }
+  84%,
+  100% {
+    transform: rotate(2160deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .crash-art .crash-burst,
+  .crash-art .crash-smoke {
+    display: none;
+  }
+}
+
 /* The contributor swarm in the home page's open source band
    (components/home/community.tsx). A dashed link joins each drone to its
    neighbour nearer the middle, and a signal runs out along the links from the
