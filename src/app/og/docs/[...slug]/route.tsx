@@ -1,8 +1,6 @@
-import { generate as DefaultImage } from "fumadocs-ui/og";
 import { notFound } from "next/navigation";
-import { ImageResponse } from "next/og";
-import { appName } from "@/lib/shared";
 import { getPageImageUrl, getPageName, source } from "@/lib/source";
+import { ogImage } from "../../og-image";
 
 export const revalidate = false;
 
@@ -14,17 +12,11 @@ export async function GET(
   const page = source.getPage(slug.slice(0, -1));
   if (!page) notFound();
 
-  return new ImageResponse(
-    <DefaultImage
-      title={getPageName(page)}
-      description={page.data.description}
-      site={appName}
-    />,
-    {
-      width: 1200,
-      height: 630,
-    },
-  );
+  return ogImage({
+    eyebrow: "Documentation",
+    title: getPageName(page),
+    description: page.data.description,
+  });
 }
 
 export function generateStaticParams() {

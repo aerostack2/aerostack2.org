@@ -30,7 +30,7 @@ const TRAVEL = 0.7;
 const leave = (order: number) => TRAVEL + order * 0.3;
 
 const O: V = [0, 0, 0];
-const DRONES = [
+export const DRONES = [
   {
     key: "gazebo",
     name: "Gazebo",
