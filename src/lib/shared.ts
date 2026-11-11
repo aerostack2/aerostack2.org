@@ -1,5 +1,5 @@
 export const appName = "Aerostack2";
-export const siteUrl = "https://aerostack2.dev";
+export const siteUrl = "https://aerostack2.org";
 export const appDescription =
   "An open source framework for developing multi-robot aerial systems, built on ROS 2.";
 export const docsRoute = "/docs";
