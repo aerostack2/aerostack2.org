@@ -77,7 +77,11 @@ async function serpapi(params: Record<string, string>) {
   url.searchParams.set("api_key", key);
   // A month's cache. In production that's how often the citation pages
   // refresh, and in dev it saves spending searches on every restart.
-  const response = await fetch(url, { next: { revalidate: 2592000 } });
+  // SerpApi can hang; failing fast lets the build fall back.
+  const response = await fetch(url, {
+    next: { revalidate: 2592000 },
+    signal: AbortSignal.timeout(15000),
+  });
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   const data = await response.json();
   if (data?.error) throw new Error(String(data.error));
