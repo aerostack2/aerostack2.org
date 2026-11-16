@@ -168,18 +168,17 @@ function grid(w: number, h: number) {
 
 /** The diamond the navbar draws where two rules cross. */
 function Mark({ x, y }: { x: number; y: number }) {
+  // An SVG, since Satori misplaces rotated boxes away from the left edge.
   return (
-    <div
-      style={{
-        position: "absolute",
-        left: x - 5,
-        top: y - 5,
-        width: 10,
-        height: 10,
-        transform: "rotate(45deg)",
-        border: `1px solid ${c.border}`,
-        background: c.bg,
-      }}
+    // biome-ignore lint/performance/noImgElement: Satori, not the DOM
+    <img
+      src={svgUri(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M7.5 0.5L14.5 7.5L7.5 14.5L0.5 7.5Z" fill="${c.bg}" stroke="${c.border}"/></svg>`,
+      )}
+      width={15}
+      height={15}
+      alt=""
+      style={{ position: "absolute", left: x - 7, top: y - 7 }}
     />
   );
 }
