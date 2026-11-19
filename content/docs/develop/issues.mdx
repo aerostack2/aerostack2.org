@@ -14,7 +14,7 @@ make it happen again, so someone can fix it without a long back and forth.
 | Report a bug or ask for a feature in Aerostack2 | [aerostack2/aerostack2 issues](https://github.com/aerostack2/aerostack2/issues) |
 | Report a problem with a platform that lives in its own repository, like Pixhawk or Crazyflie | That platform's repository, linked from its page under [Aerial platforms](/docs/aerial-platforms) |
 | Ask how to do something, or share what you built | [GitHub Discussions](https://github.com/aerostack2/aerostack2/discussions) |
-| Report a mistake in this documentation | [aerostack2/aerostack2.dev issues](https://github.com/aerostack2/aerostack2.dev/issues) |
+| Report a mistake in this documentation | [aerostack2/aerostack2.org issues](https://github.com/aerostack2/aerostack2.org/issues) |
 
 Search the open and closed issues first. If someone has already reported the same thing, add what
 you know there instead of opening a new one.
@@ -28,17 +28,17 @@ New issues start from one of two templates.
 | Bug report | Something that doesn't work as documented, or crashes | `bug` |
 | Feature request | Something Aerostack2 should do but doesn't yet | `enhancement` |
 
-## Name it after the package
+## Give it a clear title
 
-Titles start with the package in square brackets, followed by a short description of the problem:
+The title is a short description of the problem, without a package prefix:
 
 ```txt
-[as2_geozones] Runtime GPS geozones are not converted to local frame
-[as2_platform_multirotor_simulator] Gimbal still present when its pub_freq is zero
+Runtime GPS geozones are not converted to local frame
+Gimbal still present when its pub_freq is zero
 ```
 
-The package name tells the team who should look at it. Use `aerostack2` when the issue is about the
-whole stack, like a release.
+Say which package it's about in the description. A maintainer adds the package label, which tells
+the team who should look at it.
 
 ## Write a bug report
 
