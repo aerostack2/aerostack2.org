@@ -7,9 +7,16 @@ icon: GitPullRequest
 Every change to Aerostack2 goes through a pull request against `main`. This page walks through one,
 from setting up your copy of the code to the merge.
 
-For anything bigger than a small fix, [open an issue](/docs/develop/issues) first, or comment on an
-existing one, to say what you plan to do. The team can tell you early if the change belongs
-somewhere else or is already under way.
+<Callout type="warn" title="Propose features before building them">
+New features, new packages, new messages and changes to how the core nodes connect start with a
+[feature request](/docs/develop/issues#write-a-feature-request) or a
+[discussion](https://github.com/aerostack2/aerostack2/discussions). Agree on the design and where it
+fits before you write the code. Pull requests for these changes without a prior agreement are
+closed.
+</Callout>
+
+Bug fixes and small improvements can go straight to a pull request. If an issue already exists for
+them, comment on it to say you're working on it.
 
 <Steps>
 <Step>
@@ -180,7 +187,7 @@ Once the checks pass and the reviewers approve, a maintainer merges it, by squas
 onto `main`. The branch is deleted after the merge.
 
 If your change affects how Aerostack2 is used, update this documentation too, in
-[aerostack2/aerostack2.dev](https://github.com/aerostack2/aerostack2.dev).
+[aerostack2/aerostack2.org](https://github.com/aerostack2/aerostack2.org).
 
 </Step>
 </Steps>
