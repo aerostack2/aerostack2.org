@@ -34,9 +34,9 @@ export const size = { width: 1200, height: 630 };
 
 const cwd = process.cwd();
 const theme = readFileSync(join(cwd, "src/app/theme-linear.css"), "utf8");
-/** A light-theme token: its first definition, before the `.dark` block. */
-function token(name: string) {
-  const m = theme.match(
+/** A theme token: the light one is the first definition, the dark one is in the `.dark` block. */
+function token(name: string, dark = false) {
+  const m = (dark ? theme.slice(theme.indexOf(".dark {")) : theme).match(
     new RegExp(`--color-fd-${name}:\\s*(#[0-9a-f]{6})`, "i"),
   );
   if (!m) throw new Error(`og-image: no --color-fd-${name} in the theme`);
@@ -55,19 +55,20 @@ const mix = (a: string, b: string, k: number) =>
     )
     .join("")}`;
 
-const c = {
-  bg: token("background"),
-  fg: token("foreground"),
-  muted: token("muted-foreground"),
-  border: token("border"),
-  primary: token("primary"),
-};
-/** The line art's edge, as `.line-figure` sets it. */
-const edge = mix(c.fg, c.bg, 0.7);
+const palette = (dark = false) => ({
+  bg: token("background", dark),
+  fg: token("foreground", dark),
+  muted: token("muted-foreground", dark),
+  border: token("border", dark),
+  primary: token("primary", dark),
+});
+export type Palette = ReturnType<typeof palette>;
+export const c = palette();
+export const cDark = palette(true);
 
 const font = (file: string) => readFile(join(cwd, "src/app/og/fonts", file));
 
-const assets = Promise.all([
+export const assets = Promise.all([
   font("IBMPlexSerif-Regular.ttf"),
   font("IBMPlexSans-Regular.ttf"),
   font("IBMPlexMono-Regular.ttf"),
@@ -90,13 +91,19 @@ const leaderColor = DRONES.find((d) => d.key === "gazebo")?.color ?? c.primary;
 const SWARM = [
   { o: LEADER, color: leaderColor },
   ...[at(-95, -85, 80), at(95, -85, 95), at(-95, 85, 95), at(95, 85, 80)].map(
-    (o) => ({ o, color: c.primary }),
+    (o) => ({ o, color: "" }), // the palette's primary, set when drawn
   ),
 ].sort((a, b) => depth(a.o) - depth(b.o));
 
 /** The swarm as a standalone SVG, `width` px wide, styled as the hero draws its drones lit. */
-function swarm(width: number) {
-  const drones = SWARM.map((d) => ({ ...d, items: px4(d.o) }));
+export function swarm(width: number, p: Palette = c) {
+  /** The line art's edge, as `.line-figure` sets it. */
+  const edge = mix(p.fg, p.bg, 0.7);
+  const drones = SWARM.map((d) => ({
+    ...d,
+    color: d.color || p.primary,
+    items: px4(d.o),
+  }));
   const links = SWARM.filter((d) => d.o !== LEADER).map((d) =>
     line([add(LEADER, [0, 0, 20]), add(d.o, [0, 0, 20])]),
   );
@@ -145,7 +152,7 @@ function swarm(width: number) {
     (d, k) =>
       `<radialGradient id="g${k}"><stop offset="0" stop-color="${d.color}" stop-opacity="0.35"/><stop offset="1" stop-color="${d.color}" stop-opacity="0"/></radialGradient>`,
   );
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb.join(" ")}"><defs>${gradients.join("")}<filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.5"/></filter></defs><style>path,circle{fill:none;stroke:${c.muted};stroke-width:${sw};stroke-linejoin:round;stroke-linecap:round}.sil{fill:${c.bg};stroke:${edge}}.lo{stroke:${c.border}}.pin,.guard{stroke:${edge}}.link{stroke:${c.primary};stroke-dasharray:${2 * sw} ${4 * sw};opacity:0.6}.dash{stroke-dasharray:${sw} ${3 * sw}}</style>${glows.join("")}${shadows.map((e) => `<path d="${e.d}" class="lo"/>`).join("")}${links.map((l) => `<path d="${l.d}" class="link"/>`).join("")}${body.join("")}</svg>`;
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb.join(" ")}"><defs>${gradients.join("")}<filter id="blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.5"/></filter></defs><style>path,circle{fill:none;stroke:${p.muted};stroke-width:${sw};stroke-linejoin:round;stroke-linecap:round}.sil{fill:${p.bg};stroke:${edge}}.lo{stroke:${p.border}}.pin,.guard{stroke:${edge}}.link{stroke:${p.primary};stroke-dasharray:${2 * sw} ${4 * sw};opacity:0.6}.dash{stroke-dasharray:${sw} ${3 * sw}}</style>${glows.join("")}${shadows.map((e) => `<path d="${e.d}" class="lo"/>`).join("")}${links.map((l) => `<path d="${l.d}" class="link"/>`).join("")}${body.join("")}</svg>`;
   return {
     src: svgUri(svg),
     width,
@@ -160,20 +167,20 @@ const svgUri = (svg: string) =>
 const art = swarm(420);
 
 /** The hero's 56px grid, faded out round the swarm. Satori can't tile or mask a CSS gradient, so it's an SVG. */
-function grid(w: number, h: number) {
+export function grid(w: number, h: number, p: Palette = c) {
   return svgUri(
-    `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><defs><pattern id="p" width="56" height="56" patternUnits="userSpaceOnUse"><path d="M0.5 0V56M0 0.5H56" stroke="${c.border}" fill="none"/></pattern><radialGradient id="f" cx="0.76" cy="0.55" r="0.34" gradientTransform="translate(0.76 0.55) scale(1 1.6) translate(-0.76 -0.55)"><stop offset="0.2" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient><mask id="m"><rect width="100%" height="100%" fill="url(#f)"/></mask></defs><rect width="100%" height="100%" fill="url(#p)" mask="url(#m)"/></svg>`,
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><defs><pattern id="p" width="56" height="56" patternUnits="userSpaceOnUse"><path d="M0.5 0V56M0 0.5H56" stroke="${p.border}" fill="none"/></pattern><radialGradient id="f" cx="0.76" cy="0.55" r="0.34" gradientTransform="translate(0.76 0.55) scale(1 1.6) translate(-0.76 -0.55)"><stop offset="0.2" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient><mask id="m"><rect width="100%" height="100%" fill="url(#f)"/></mask></defs><rect width="100%" height="100%" fill="url(#p)" mask="url(#m)"/></svg>`,
   );
 }
 
 /** The diamond the navbar draws where two rules cross. */
-function Mark({ x, y }: { x: number; y: number }) {
+export function Mark({ x, y, p = c }: { x: number; y: number; p?: Palette }) {
   // An SVG, since Satori misplaces rotated boxes away from the left edge.
   return (
     // biome-ignore lint/performance/noImgElement: Satori, not the DOM
     <img
       src={svgUri(
-        `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M7.5 0.5L14.5 7.5L7.5 14.5L0.5 7.5Z" fill="${c.bg}" stroke="${c.border}"/></svg>`,
+        `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"><path d="M7.5 0.5L14.5 7.5L7.5 14.5L0.5 7.5Z" fill="${p.bg}" stroke="${p.border}"/></svg>`,
       )}
       width={15}
       height={15}
