@@ -1,6 +1,5 @@
 {
-  "name": "aerostack2.dev",
-  "version": "0.0.10",
+  "name": "aerostack2.org",
   "private": true,
   "scripts": {
     "build": "next build",
