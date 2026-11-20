@@ -163,6 +163,31 @@ export async function getPageContributors(
   }
 }
 
+/**
+ * The newest patch tag of each `major.minor`, e.g. `{ "2.0": "2.0.3" }`.
+ * On any failure it gives back an empty map and the patch is left out.
+ */
+export async function getLatestPatches(): Promise<Map<string, string>> {
+  const latest = new Map<string, string>();
+  try {
+    const tags = await github<{ name: string }[]>(
+      `repos/${projectRepo.owner}/${projectRepo.repo}/tags?per_page=100`,
+    );
+    for (const { name } of tags) {
+      const match = /^v?(\d+\.\d+)\.\d+$/.exec(name);
+      if (!match) continue;
+      const version = name.replace(/^v/, "");
+      const seen = latest.get(match[1]);
+      if (
+        !seen ||
+        version.localeCompare(seen, undefined, { numeric: true }) > 0
+      )
+        latest.set(match[1], version);
+    }
+  } catch {}
+  return latest;
+}
+
 /** A GitHub avatar at `size` pixels, doubled for sharp screens. */
 export const avatarAt = (url: string, size: number) =>
   `${url}${url.includes("?") ? "&" : "?"}s=${size * 2}`;

@@ -22,6 +22,7 @@ Then open http://localhost:3000.
 | `bun start` | Serves the production build |
 | `bun run types:check` | Checks the types |
 | `bun run lint` | Lints and checks formatting with Biome |
+| `bun run docs:cut <version>` | Freezes the main docs as a release, see [Versions](#versions) |
 | `bun run changelog` | Writes `CHANGELOG.md` from the commit history with git-cliff |
 
 ## Commits
@@ -30,6 +31,15 @@ Commit messages follow [Conventional Commits](https://www.conventionalcommits.or
 commitlint. `bun install` sets up the git hooks with lefthook: Biome fixes the staged files before
 each commit and commitlint checks the message. CI runs the lint, the type check, the build and
 commitlint on every push to `main` and every pull request.
+
+## Versions
+
+`content/docs` holds the docs for `main`, served at `/docs`. Each minor release is a frozen copy in `content/docs/<major.minor>`, served at `/docs/<major.minor>`, with its own sidebar, search and an entry in the version dropdown.
+
+| When | What to do |
+| --- | --- |
+| A minor release (2.1) | `bun run docs:cut 2.1`. It copies the main docs and points their links at `/docs/2.1`. Then set `upcomingDocsVersion` in `src/lib/shared.ts` to the next release, or `null` |
+| A patch release (2.1.1) | Nothing. Fix the pages in `content/docs/2.1` directly, and in `content/docs` too when the fix also applies to `main` |
 
 ## Environment
 
