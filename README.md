@@ -34,12 +34,19 @@ commitlint on every push to `main` and every pull request.
 
 ## Versions
 
-`content/docs` holds the docs for `main`, served at `/docs`. Each minor release is a frozen copy in `content/docs/<major.minor>`, served at `/docs/<major.minor>`, with its own sidebar, search and an entry in the version dropdown.
+`content/docs` holds the docs for `main`, served at `/docs`. Each minor release is a frozen copy in `content/docs/<major.minor>`, served at `/docs/<major.minor>` with its own sidebar and search. Patch releases share their minor's docs.
 
 | When | What to do |
 | --- | --- |
-| A minor release (2.1) | `bun run docs:cut 2.1`. It copies the main docs and points their links at `/docs/2.1`. Then set `upcomingDocsVersion` in `src/lib/shared.ts` to the next release, or `null` |
-| A patch release (2.1.1) | Nothing. Fix the pages in `content/docs/2.1` directly, and in `content/docs` too when the fix also applies to `main` |
+| A minor or major release (2.1) | Run `bun run docs:cut 2.1`, set `upcomingDocsVersion` in `src/lib/shared.ts` to the next release (or `null`), and open a PR |
+| A patch release (2.1.1) | Nothing, unless the patch changes something the docs cover. Then edit `content/docs/2.1` directly, and `content/docs` too when the change also applies to `main` |
+| A fix to a release's docs | Edit its folder directly. Never copy pages from `main` again, since `main` may already document the next release |
+
+`docs:cut` copies the main docs into `content/docs/<major.minor>`, points their absolute links at `/docs/<major.minor>` and gives the folder its own sidebar. It refuses anything but `major.minor` and an existing folder.
+
+Links added to a release's pages by hand must start with `/docs/<major.minor>/`, or they lead to `main`. Relative links work in every folder.
+
+The version selector lists `main`, `upcomingDocsVersion` as coming soon until its folder exists, and each release folder. A release's patch number is its newest tag on [aerostack2](https://github.com/aerostack2/aerostack2), refreshed once a day like the GitHub stats.
 
 ## Environment
 
