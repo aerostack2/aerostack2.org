@@ -8,7 +8,12 @@ import { createElement } from "react";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import { codeThemes } from "./code-themes";
-import { docsContentRoute, docsImageRoute, docsRoute } from "./shared";
+import {
+  docsContentRoute,
+  docsImageRoute,
+  docsRoute,
+  isDocsVersion,
+} from "./shared";
 
 const docs = defineDocs({
   dir: "content/docs",
@@ -68,9 +73,42 @@ function containsUrl(folder: PageTree.Folder, url: string): boolean {
   );
 }
 
+/** The release a page belongs to, or `undefined` for main. */
+export function getVersion(page: Page): string | undefined {
+  const [first] = page.slugs;
+  return isDocsVersion(first) ? first : undefined;
+}
+
+/** The released versions, newest first. */
+export function getVersions(): string[] {
+  const versions = new Set(source.getPages().map(getVersion));
+  versions.delete(undefined);
+  return [...(versions as Set<string>)].sort((a, b) =>
+    b.localeCompare(a, undefined, { numeric: true }),
+  );
+}
+
+/** The page's slugs below its version folder. */
+function ownSlugs(page: Page): string[] {
+  return getVersion(page) ? page.slugs.slice(1) : page.slugs;
+}
+
+/**
+ * The sidebar a page shows: main's tree, or its version folder. Version
+ * folders are left out of main's `meta.json`, so they sit in the fallback tree.
+ */
+function sidebarRoot(url: string): PageTree.Root | PageTree.Folder {
+  const tree = source.getPageTree();
+  const version = tree.fallback?.children.find(
+    (node): node is PageTree.Folder =>
+      node.type === "folder" && node.root === true && containsUrl(node, url),
+  );
+  return version ?? tree;
+}
+
 /** Name of the top-level sidebar section a page belongs to, if any. */
 export function getSectionName(url: string): string | undefined {
-  for (const node of source.getPageTree().children) {
+  for (const node of sidebarRoot(url).children) {
     if (node.type === "folder" && containsUrl(node, url)) {
       return typeof node.name === "string" ? node.name : undefined;
     }
@@ -79,7 +117,7 @@ export function getSectionName(url: string): string | undefined {
 
 /** True for a section's `index.mdx`, the page its sidebar folder opens. */
 function isSectionIndex(page: Page): boolean {
-  return page.slugs.length === 1 && page.path.endsWith("index.mdx");
+  return ownSlugs(page).length === 1 && page.path.endsWith("index.mdx");
 }
 
 /**
@@ -87,7 +125,7 @@ function isSectionIndex(page: Page): boolean {
  * their section's name instead, and the docs root is "Documentation".
  */
 export function getPageName(page: Page): string {
-  if (page.slugs.length === 0) return "Documentation";
+  if (ownSlugs(page).length === 0) return "Documentation";
   if (isSectionIndex(page)) return getSectionName(page.url) ?? page.data.title;
   return page.data.title;
 }
