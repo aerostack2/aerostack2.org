@@ -15,7 +15,8 @@
       "!build",
       "!.source",
       "!src/app/**/*.css",
-      "!content/cppdocs"
+      "!content/cppdocs",
+      "!content/pydocs"
     ]
   },
   "formatter": {

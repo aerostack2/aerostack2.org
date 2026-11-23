@@ -33,10 +33,10 @@ const patches = [...tags.matchAll(/refs\/tags\/(\d+\.\d+)\.(\d+)$/gm)]
   .filter(([, minor]) => minor === version)
   .map(([, , patch]) => Number(patch));
 if (patches.length === 0) {
-  console.error(`Upstream has no ${version}.x tag for the C++ API docs`);
+  console.error(`Upstream has no ${version}.x tag for the API docs`);
   process.exit(1);
 }
-const cppTag = `${version}.${Math.max(...patches)}`;
+const apiTag = `${version}.${Math.max(...patches)}`;
 
 for (const entry of readdirSync(root)) {
   if (isDocsVersion(entry)) continue;
@@ -45,7 +45,7 @@ for (const entry of readdirSync(root)) {
 
 // Absolute links in the copy would otherwise lead back to main.
 const docsLink = /(?<=[("'])\/docs(?=[/#)"'])/g;
-const cppdocsLink = /(?<=[("'])\/cppdocs\/main(?=[/#)"'])/g;
+const apiDocsLink = /(?<=[("'])\/(cppdocs|pydocs)\/main(?=[/#)"'])/g;
 for (const file of readdirSync(dest, { recursive: true, encoding: "utf8" })) {
   if (!file.endsWith(".mdx")) continue;
   const path = join(dest, file);
@@ -53,7 +53,7 @@ for (const file of readdirSync(dest, { recursive: true, encoding: "utf8" })) {
     path,
     readFileSync(path, "utf8")
       .replace(docsLink, `/docs/${version}`)
-      .replace(cppdocsLink, `/cppdocs/${version}`),
+      .replace(apiDocsLink, `/$1/${version}`),
   );
 }
 
@@ -64,12 +64,12 @@ writeFileSync(
   `${JSON.stringify({ title: version, root: true, ...meta }, null, 2)}\n`,
 );
 
-const cppVersionsPath = "content/cppdocs/versions.json";
-const cppVersions = JSON.parse(readFileSync(cppVersionsPath, "utf8"));
-// Newest first, since next.config.mjs sends /cppdocs to the first entry.
+const apiVersionsPath = "content/api-versions.json";
+const apiVersions = JSON.parse(readFileSync(apiVersionsPath, "utf8"));
+// Newest first, since next.config.mjs sends /cppdocs and /pydocs to the first entry.
 writeFileSync(
-  cppVersionsPath,
-  `${JSON.stringify({ [version]: cppTag, ...cppVersions }, null, 2)}\n`,
+  apiVersionsPath,
+  `${JSON.stringify({ [version]: apiTag, ...apiVersions }, null, 2)}\n`,
 );
 
-console.log(`Cut ${dest} with C++ API docs from ${cppTag}`);
+console.log(`Cut ${dest} with API docs from ${apiTag}`);

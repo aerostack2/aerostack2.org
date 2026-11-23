@@ -1,13 +1,11 @@
 import { createMDX } from "fumadocs-mdx/next";
-import cppdocsVersions from "./content/cppdocs/versions.json" with {
-  type: "json",
-};
+import apiVersions from "./content/api-versions.json" with { type: "json" };
 
 const withMDX = createMDX();
 
 // Listed newest release first, so this is main only until a release is cut.
-const latestCppdocs = Object.keys(cppdocsVersions)[0];
-const cppdocsVersion = ":version(main|\\d+\\.\\d+)";
+const latestApiVersion = Object.keys(apiVersions)[0];
+const apiVersion = ":version(main|\\d+\\.\\d+)";
 
 /** @type {import('next').NextConfig} */
 const config = {
@@ -19,29 +17,37 @@ const config = {
   images: {
     unoptimized: true,
   },
-  // Doxygen's relative links need /cppdocs/<version>/ to keep its slash, so the
-  // default slash removal is turned off and re-created for everything else.
+  // The generated API pages link relative to their URL, so theirs must keep the
+  // slash. The default slash removal is off and re-created for everything else.
   skipTrailingSlashRedirect: true,
   async redirects() {
     return [
+      ...["cppdocs", "pydocs"].flatMap((docs) => [
+        {
+          source: `/${docs}`,
+          destination: `/${docs}/${latestApiVersion}/`,
+          permanent: false,
+        },
+        {
+          // The lookahead stops this from also matching the slashed URL and looping.
+          source: `/${docs}/:version((?:main|\\d+\\.\\d+)(?!/))`,
+          destination: `/${docs}/:version/`,
+          permanent: true,
+        },
+        {
+          source: `/${docs}/${apiVersion}/index.html`,
+          destination: `/${docs}/:version/`,
+          permanent: true,
+        },
+      ]),
       {
-        source: "/cppdocs",
-        destination: `/cppdocs/${latestCppdocs}/`,
-        permanent: false,
-      },
-      {
-        // The lookahead stops this from also matching the slashed URL and looping.
-        source: "/cppdocs/:version((?:main|\\d+\\.\\d+)(?!/))",
-        destination: "/cppdocs/:version/",
+        // Sphinx pages are folders, while a dot in the last segment means a file.
+        source: `/pydocs/${apiVersion}/:page((?:[^/]+/)*[^./]+(?!/))`,
+        destination: "/pydocs/:version/:page/",
         permanent: true,
       },
       {
-        source: `/cppdocs/${cppdocsVersion}/index.html`,
-        destination: "/cppdocs/:version/",
-        permanent: true,
-      },
-      {
-        source: "/:path((?!cppdocs(?:/|$)).+)/",
+        source: "/:path((?!(?:cppdocs|pydocs)(?:/|$)).+)/",
         destination: "/:path",
         permanent: true,
       },
@@ -50,8 +56,16 @@ const config = {
   async rewrites() {
     return [
       {
-        source: `/cppdocs/${cppdocsVersion}/`,
+        source: `/cppdocs/${apiVersion}/`,
         destination: "/cppdocs/:version/index.html",
+      },
+      {
+        source: `/pydocs/${apiVersion}/`,
+        destination: "/pydocs/:version/index.html",
+      },
+      {
+        source: `/pydocs/${apiVersion}/:page(.+)/`,
+        destination: "/pydocs/:version/:page/index.html",
       },
     ];
   },

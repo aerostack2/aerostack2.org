@@ -201,6 +201,7 @@ code, pre, div.fragment, div.line { font-family: var(--font-family-monospace); }
 #as2-theme:hover { background: var(--as2-accent); color: var(--as2-foreground); }
 .as2-search #MSearchBox { position: static; margin: 0; }
 #as2-version { padding: 3px 6px; border: 1px solid var(--as2-border); border-radius: 6px; background: var(--as2-background); color: var(--as2-muted-foreground); font-family: var(--font-family-monospace); font-size: 12px; }
+#as2-version:focus-visible { outline: 1px solid var(--as2-primary); outline-offset: 1px; }
 @media (max-width: 640px) {
   .as2-section, .as2-links { display: none; }
   .as2-search { margin-left: auto; }

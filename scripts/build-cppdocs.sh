@@ -26,20 +26,13 @@ fi
 # Cleared so pages for symbols removed upstream don't linger.
 rm -rf public/cppdocs
 mkdir -p public/cppdocs
-cp content/cppdocs/versions.json public/cppdocs/versions.json
+cp content/api-versions.json public/cppdocs/versions.json
 
-VERSIONS=$(bun -e 'const versions = await Bun.file("content/cppdocs/versions.json").json();
+VERSIONS=$(bun -e 'const versions = await Bun.file("content/api-versions.json").json();
 for (const [version, ref] of Object.entries(versions)) console.log(version, ref);')
 
 while read -r version ref; do
-  SOURCE="$CACHE/src/$version"
-  if [ "$(cat "$SOURCE/.git/cppdocs-ref" 2>/dev/null || true)" != "$ref" ]; then
-    mkdir -p "$SOURCE"
-    git -C "$SOURCE" init -q
-    git -C "$SOURCE" fetch -q --depth 1 https://github.com/aerostack2/aerostack2 "$ref"
-    git -C "$SOURCE" checkout -q --force FETCH_HEAD
-    echo "$ref" >"$SOURCE/.git/cppdocs-ref"
-  fi
+  SOURCE=$(bash scripts/fetch-aerostack2.sh "$version" "$ref")
   mkdir -p "public/cppdocs/$version"
-  CPPDOCS_VERSION="$version" CPPDOCS_INPUT="$PWD/$SOURCE" "$DOXYGEN" content/cppdocs/Doxyfile
+  CPPDOCS_VERSION="$version" CPPDOCS_INPUT="$SOURCE" "$DOXYGEN" content/cppdocs/Doxyfile
 done <<<"$VERSIONS"

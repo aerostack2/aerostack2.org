@@ -1,0 +1,23 @@
+{% extends "!page.html" %}
+
+{% block extrahead %}
+{{ super() }}
+<link rel="icon" href="/logo.png"/>
+{% endblock %}
+
+{% block body %}
+<header class="as2-bar">
+  <a class="as2-brand" href="/"><img src="/logo.png" width="24" height="24" alt=""/><span>Aerostack2</span></a>
+  <a class="as2-section" href="{{ pathto(master_doc) }}">Python API</a>
+  <select id="as2-version" aria-label="Python API version" hidden></select>
+  <nav class="as2-links">
+    <a href="/docs">Docs</a>
+    <a href="/cppdocs/{{ release }}/">C++ API</a>
+    <a href="https://github.com/aerostack2/aerostack2">GitHub</a>
+  </nav>
+  <button id="as2-theme" type="button" aria-label="Toggle dark mode">
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg>
+  </button>
+</header>
+{{ super() }}
+{% endblock %}

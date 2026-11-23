@@ -1,0 +1,47 @@
+/* Colors live in conf.py, through Furo's theme options. */
+
+@font-face { font-family: "IBM Plex Sans"; src: url("IBMPlexSans-Regular.ttf") format("truetype"); font-display: swap; }
+@font-face { font-family: "IBM Plex Mono"; src: url("IBMPlexMono-Regular.ttf") format("truetype"); font-display: swap; }
+@font-face { font-family: "IBM Plex Serif"; src: url("IBMPlexSerif-Regular.ttf") format("truetype"); font-display: swap; }
+
+:root { --as2-bar-height: 56px; }
+
+/* Site bar */
+.as2-bar { position: sticky; top: 0; z-index: 60; display: flex; align-items: center; gap: 16px; height: var(--as2-bar-height); padding: 0 16px; box-sizing: border-box; border-bottom: 1px solid var(--color-background-border); background: var(--color-background-primary); }
+.as2-bar a, .as2-bar a:hover { text-decoration: none; }
+.as2-brand { display: flex; align-items: center; gap: 8px; color: var(--color-foreground-primary); font-family: var(--font-stack--headings); font-size: 20px; }
+.as2-brand:visited { color: var(--color-foreground-primary); }
+.as2-brand img { border-radius: 6px; box-shadow: 0 0 0 1px var(--color-background-border); }
+.as2-section, .as2-section:visited { color: var(--color-brand-primary); font-family: var(--font-stack--monospace); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; }
+.as2-links { display: flex; gap: 16px; margin-left: auto; font-size: 14px; }
+.as2-links a, .as2-links a:visited { color: var(--color-foreground-secondary); }
+.as2-links a:hover { color: var(--color-foreground-primary); }
+#as2-version { padding: 3px 6px; border: 1px solid var(--color-background-border); border-radius: 6px; background: var(--color-background-primary); color: var(--color-foreground-secondary); font-family: var(--font-stack--monospace); font-size: 12px; }
+#as2-theme { display: inline-flex; padding: 6px; border: 1px solid var(--color-background-border); border-radius: 6px; background: none; color: var(--color-foreground-secondary); cursor: pointer; }
+#as2-theme:hover { background: var(--color-background-hover); color: var(--color-foreground-primary); }
+.theme-toggle-container { display: none !important; }
+
+/* Keep Furo's sticky columns below the bar. */
+.sidebar-sticky, .toc-sticky { top: var(--as2-bar-height); height: calc(100vh - var(--as2-bar-height)); }
+.sidebar-tree .reference, .related-pages .title { overflow-wrap: anywhere; }
+article { overflow-wrap: break-word; }
+@media (min-width: 67.01em) {
+  .sidebar-drawer { justify-content: flex-start; width: 17rem; min-width: 17rem; }
+  .sidebar-container { width: 100%; }
+}
+#as2-version:focus-visible { outline: 1px solid var(--color-brand-primary); outline-offset: 1px; }
+.mobile-header { top: var(--as2-bar-height); }
+.mobile-header .header-center { visibility: hidden; }
+html { scroll-padding-top: calc(var(--as2-bar-height) + 16px); }
+@media (max-width: 640px) {
+  .as2-section { display: none; }
+  .as2-links a:not(:first-child) { display: none; }
+}
+
+/* Type */
+h1, h2, h3 { font-weight: 400; letter-spacing: -0.02em; }
+h1 { font-size: 2.25rem; line-height: 1.1; }
+.sig { border-radius: 6px; }
+table.longtable, table.autosummary { margin-left: 0; box-shadow: none; }
+.toc-tree code.literal { padding: 0; border: 0; background: none; color: inherit; }
+code.literal { border-color: color-mix(in oklab, var(--color-brand-primary) 18%, transparent); color: var(--color-brand-primary); }

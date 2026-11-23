@@ -2,8 +2,9 @@
   "name": "aerostack2.org",
   "private": true,
   "scripts": {
-    "build": "bun run cppdocs:build && next build",
+    "build": "bun run cppdocs:build && bun run pydocs:build && next build",
     "cppdocs:build": "bash scripts/build-cppdocs.sh",
+    "pydocs:build": "bash scripts/build-pydocs.sh",
     "dev": "next dev",
     "start": "next start",
     "types:check": "next typegen && tsc --noEmit",
