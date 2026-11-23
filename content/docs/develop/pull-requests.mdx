@@ -18,6 +18,12 @@ closed.
 Bug fixes and small improvements can go straight to a pull request. If an issue already exists for
 them, comment on it to say you're working on it.
 
+<Callout title="Using AI tools">
+AI-assisted contributions are welcome. Disclose the tools you used, understand every change you
+submit, and only report tests you actually ran. The
+[AI Usage Policy](https://github.com/aerostack2/aerostack2/blob/main/AI_POLICY.md) has the full rules.
+</Callout>
+
 <Steps>
 <Step>
 
@@ -94,7 +100,8 @@ docs(as2_behavior): fix the service type in the README
 | `chore` | Anything else, like dependency bumps |
 | `revert` | Reverting an earlier commit |
 
-Keep each commit to one logical change. Add or update tests along with the code they cover.
+Keep each commit to one logical change. Add or update tests along with the code they cover. If an
+AI agent wrote the commit, end its message with a `Co-authored-by:` trailer naming the agent.
 
 </Step>
 <Step>
@@ -137,6 +144,7 @@ The description template asks for these.
 | Issue(s) this addresses | The issue it fixes, written as `Closes #123` so GitHub closes it on merge |
 | ROS 2 version tested on | Humble, Jazzy, or both |
 | Aerial platform tested on | Where you flew it, like Gazebo or the multirotor simulator |
+| AI tools used | None, or the tool and what it did |
 | Description of contribution | What changed, in a few bullet points |
 | Documentation updates | The pages on this site that need to change with it |
 | Future work | Anything you left for later |
