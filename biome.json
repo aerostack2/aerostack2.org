@@ -14,7 +14,8 @@
       "!dist",
       "!build",
       "!.source",
-      "!src/app/**/*.css"
+      "!src/app/**/*.css",
+      "!content/cppdocs"
     ]
   },
   "formatter": {

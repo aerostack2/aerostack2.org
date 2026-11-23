@@ -1,0 +1,227 @@
+/* Maps Doxygen's CSS variables onto the site's palette (src/app/theme-linear.css). */
+
+@font-face { font-family: "IBM Plex Sans"; src: url("IBMPlexSans-Regular.ttf") format("truetype"); font-display: swap; }
+@font-face { font-family: "IBM Plex Mono"; src: url("IBMPlexMono-Regular.ttf") format("truetype"); font-display: swap; }
+@font-face { font-family: "IBM Plex Serif"; src: url("IBMPlexSerif-Regular.ttf") format("truetype"); font-display: swap; }
+
+/* Matches the specificity of Doxygen's system dark mode block, so the site's theme wins. */
+html:not(.dark-mode) {
+  color-scheme: light;
+  --as2-background: #ffffff;
+  --as2-foreground: #282a30;
+  --as2-muted: #f4f4f5;
+  --as2-muted-foreground: #6f6e77;
+  --as2-popover: #ffffff;
+  --as2-card: #f9f8f9;
+  --as2-border: #e9e8ea;
+  --as2-primary: #1348dc;
+  --as2-primary-foreground: #ffffff;
+  --as2-secondary-foreground: #3c4149;
+  --as2-accent: #f4f2f4;
+  --as2-string: #0a7d4f;
+  --as2-keyword: #a626a4;
+
+  --font-family-normal: "IBM Plex Sans", system-ui, sans-serif;
+  --font-family-monospace: "IBM Plex Mono", ui-monospace, monospace;
+  --font-family-nav: var(--font-family-normal);
+  --font-family-title: "IBM Plex Serif", Georgia, serif;
+  --font-family-toc: var(--font-family-normal);
+  --font-family-search: var(--font-family-normal);
+  --font-family-tooltip: var(--font-family-normal);
+
+  --page-background-color: var(--as2-background);
+  --page-foreground-color: var(--as2-foreground);
+  --page-link-color: var(--as2-primary);
+  --page-visited-link-color: var(--as2-primary);
+  --page-external-link-color: var(--as2-primary);
+  --index-odd-item-bg-color: var(--as2-card);
+  --index-even-item-bg-color: var(--as2-background);
+  --index-header-color: var(--as2-foreground);
+  --index-separator-color: var(--as2-border);
+  --header-background-color: var(--as2-background);
+  --header-separator-color: var(--as2-border);
+  --group-header-separator-color: var(--as2-border);
+  --group-header-color: var(--as2-foreground);
+  --footer-foreground-color: var(--as2-muted-foreground);
+  --citation-label-color: var(--as2-primary);
+  --glow-color: var(--as2-primary);
+  --title-background-color: var(--as2-background);
+  --title-separator-color: var(--as2-border);
+  --blockquote-background-color: var(--as2-card);
+  --blockquote-border-color: var(--as2-border);
+  --scrollbar-thumb-color: var(--as2-border);
+  --scrollbar-background-color: var(--as2-background);
+  --icon-background-color: var(--as2-primary);
+  --icon-foreground-color: var(--as2-primary-foreground);
+  --icon-folder-open-fill-color: var(--as2-border);
+  --icon-folder-fill-color: var(--as2-muted);
+  --icon-folder-border-color: var(--as2-muted-foreground);
+  --icon-doc-fill-color: var(--as2-muted);
+  --icon-doc-border-color: var(--as2-muted-foreground);
+
+  --memdecl-background-color: var(--as2-background);
+  --memdecl-foreground-color: var(--as2-secondary-foreground);
+  --memdecl-template-color: var(--as2-muted-foreground);
+  --memdecl-border-color: var(--as2-border);
+  --memdef-border-color: var(--as2-border);
+  --memdef-title-background-color: var(--as2-muted);
+  --memdef-proto-background-color: var(--as2-card);
+  --memdef-proto-text-color: var(--as2-foreground);
+  --memdef-param-name-color: var(--as2-keyword);
+  --memdef-template-color: var(--as2-muted-foreground);
+  --table-cell-border-color: var(--as2-border);
+  --table-header-background-color: var(--as2-muted);
+  --table-header-foreground-color: var(--as2-foreground);
+  --label-background-color: color-mix(in oklab, var(--as2-primary) 8%, transparent);
+  --label-left-top-border-color: color-mix(in oklab, var(--as2-primary) 18%, transparent);
+  --label-right-bottom-border-color: color-mix(in oklab, var(--as2-primary) 18%, transparent);
+  --label-foreground-color: var(--as2-primary);
+
+  --nav-background-color: var(--as2-background);
+  --nav-foreground-color: var(--as2-muted-foreground);
+  --nav-border-color: var(--as2-border);
+  --nav-breadcrumb-separator-color: var(--as2-border);
+  --nav-breadcrumb-active-bg: var(--as2-accent);
+  --nav-breadcrumb-color: var(--as2-muted-foreground);
+  --nav-splitbar-bg-color: var(--as2-border);
+  --nav-splitbar-handle-color: var(--as2-muted-foreground);
+  --nav-text-normal-color: var(--as2-muted-foreground);
+  --nav-menu-button-color: var(--as2-muted-foreground);
+  --nav-menu-background-color: var(--as2-background);
+  --nav-menu-foreground-color: var(--as2-muted-foreground);
+  --nav-menu-active-bg: var(--as2-accent);
+  --nav-menu-active-color: var(--as2-primary);
+  --nav-arrow-color: var(--as2-muted-foreground);
+  --nav-arrow-selected-color: var(--as2-primary);
+  --sync-icon-border-color: var(--as2-border);
+  --sync-icon-background-color: var(--as2-background);
+  --sync-icon-selected-background-color: var(--as2-accent);
+  --sync-icon-color: var(--as2-muted-foreground);
+  --sync-icon-selected-color: var(--as2-primary);
+  --toc-background-color: var(--as2-card);
+  --toc-border-color: var(--as2-border);
+  --toc-header-color: var(--as2-foreground);
+
+  --search-background-color: var(--as2-background);
+  --search-foreground-color: var(--as2-foreground);
+  --search-active-color: var(--as2-primary);
+  --search-filter-background-color: var(--as2-popover);
+  --search-filter-foreground-color: var(--as2-foreground);
+  --search-filter-border-color: var(--as2-border);
+  --search-filter-highlight-text-color: var(--as2-primary-foreground);
+  --search-filter-highlight-bg-color: var(--as2-primary);
+  --search-results-foreground-color: var(--as2-foreground);
+  --search-results-background-color: var(--as2-popover);
+  --search-results-border-color: var(--as2-border);
+  --search-box-border-color: var(--as2-border);
+  --search-close-icon-bg-color: var(--as2-muted-foreground);
+  --search-close-icon-fg-color: var(--as2-background);
+
+  --code-keyword-color: var(--as2-keyword);
+  --code-type-keyword-color: var(--as2-primary);
+  --code-flow-keyword-color: var(--as2-keyword);
+  --code-comment-color: var(--as2-muted-foreground);
+  --code-preprocessor-color: var(--as2-keyword);
+  --code-string-literal-color: var(--as2-string);
+  --code-char-literal-color: var(--as2-string);
+  --fragment-foreground-color: var(--as2-foreground);
+  --fragment-background-color: var(--as2-card);
+  --fragment-border-color: var(--as2-border);
+  --fragment-lineno-border-color: var(--as2-border);
+  --fragment-lineno-background-color: var(--as2-card);
+  --fragment-lineno-foreground-color: var(--as2-muted-foreground);
+  --fragment-lineno-link-fg-color: var(--as2-primary);
+  --fragment-lineno-link-bg-color: var(--as2-card);
+  --fragment-lineno-link-hover-fg-color: var(--as2-primary-foreground);
+  --fragment-lineno-link-hover-bg-color: var(--as2-primary);
+  --tooltip-foreground-color: var(--as2-foreground);
+  --tooltip-background-color: var(--as2-popover);
+  --tooltip-arrow-background-color: var(--as2-popover);
+  --tooltip-border-color: var(--as2-border);
+  --tooltip-doc-color: var(--as2-muted-foreground);
+  --tooltip-declaration-color: var(--as2-keyword);
+  --tooltip-link-color: var(--as2-primary);
+  --fold-line-color: var(--as2-border);
+
+  --warning-color-bg: color-mix(in oklab, #d97706 12%, transparent);
+  --warning-color-hl: #d97706;
+  --warning-color-text: var(--as2-foreground);
+  --note-color-bg: color-mix(in oklab, var(--as2-primary) 8%, transparent);
+  --note-color-hl: var(--as2-primary);
+  --note-color-text: var(--as2-foreground);
+  --todo-color-bg: color-mix(in oklab, var(--as2-primary) 8%, transparent);
+  --todo-color-hl: var(--as2-primary);
+  --todo-color-text: var(--as2-foreground);
+  --test-color-bg: color-mix(in oklab, var(--as2-string) 10%, transparent);
+  --test-color-hl: var(--as2-string);
+  --test-color-text: var(--as2-foreground);
+  --deprecated-color-bg: var(--as2-muted);
+  --deprecated-color-hl: var(--as2-muted-foreground);
+  --deprecated-color-text: var(--as2-foreground);
+  --bug-color-bg: color-mix(in oklab, #dc2626 10%, transparent);
+  --bug-color-hl: #dc2626;
+  --bug-color-text: var(--as2-foreground);
+  --invariant-color-bg: var(--as2-muted);
+  --invariant-color-hl: var(--as2-muted-foreground);
+  --invariant-color-text: var(--as2-foreground);
+}
+
+html.dark {
+  color-scheme: dark;
+  --as2-background: #16181d;
+  --as2-foreground: #edeef3;
+  --as2-muted: #1f2228;
+  --as2-muted-foreground: #9aa0ac;
+  --as2-popover: #1d1f26;
+  --as2-card: #1a1d23;
+  --as2-border: #2d3139;
+  --as2-primary: #6b96ff;
+  --as2-primary-foreground: #16181d;
+  --as2-secondary-foreground: #d0d4dc;
+  --as2-accent: #282c34;
+  --as2-string: #5fd3a2;
+  --as2-keyword: #d7a6f5;
+}
+
+body, div.contents { font-size: 15px; line-height: 1.65; }
+code, pre, div.fragment, div.line { font-family: var(--font-family-monospace); }
+
+/* Site bar */
+#top { border-bottom: 1px solid var(--as2-border); background: var(--as2-background); }
+#titlearea { border: 0; padding: 0; }
+.as2-bar { display: flex; align-items: center; gap: 16px; height: 56px; padding: 0 16px; box-sizing: border-box; }
+.as2-bar a, .as2-bar a:hover { text-decoration: none; background: none; }
+.as2-brand { display: flex; align-items: center; gap: 8px; color: var(--as2-foreground); font-family: "IBM Plex Serif", serif; font-size: 20px; }
+.as2-brand img { border-radius: 6px; box-shadow: 0 0 0 1px var(--as2-border); }
+.as2-section { color: var(--as2-primary); font-family: var(--font-family-monospace); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; }
+.as2-links { display: flex; gap: 16px; margin-left: auto; font-size: 14px; }
+.as2-links a { color: var(--as2-muted-foreground); }
+.as2-links a:hover { color: var(--as2-foreground); }
+#as2-theme { display: inline-flex; padding: 6px; border: 1px solid var(--as2-border); border-radius: 6px; background: none; color: var(--as2-muted-foreground); cursor: pointer; }
+#as2-theme:hover { background: var(--as2-accent); color: var(--as2-foreground); }
+.as2-search #MSearchBox { position: static; margin: 0; }
+#as2-version { padding: 3px 6px; border: 1px solid var(--as2-border); border-radius: 6px; background: var(--as2-background); color: var(--as2-muted-foreground); font-family: var(--font-family-monospace); font-size: 12px; }
+@media (max-width: 640px) {
+  .as2-section, .as2-links { display: none; }
+  .as2-search { margin-left: auto; }
+}
+
+/* Sidebars */
+#nav-tree a, #page-nav a { color: var(--as2-muted-foreground); }
+#nav-tree a:hover, #page-nav a:hover { color: var(--as2-foreground); }
+#nav-tree .selected a, #page-nav .selected a { color: var(--as2-primary); }
+
+/* Page */
+div.header { border: 0; background: none; }
+div.headertitle { padding: 24px 8px 4px; }
+.title { font-family: var(--font-family-title); font-size: 2.25rem; font-weight: 400; line-height: 1.1; letter-spacing: -0.02em; }
+h2.groupheader { font-family: var(--font-family-title); font-weight: 400; font-size: 1.5rem; color: var(--as2-foreground); border-bottom: 1px solid var(--as2-border); }
+.memtitle, .memproto, .memdoc, div.fragment { border-color: var(--as2-border); box-shadow: none; }
+.memtitle { background-image: none; border-radius: 6px 6px 0 0; }
+.memproto { border-radius: 0 6px 0 0; }
+.memdoc { border-radius: 0 0 6px 6px; background-image: none; }
+div.fragment { border-radius: 8px; }
+span.mlabel { border-radius: 4px; border: 1px solid var(--label-left-top-border-color); }
+
+/* Class diagrams are opaque PNGs, so they can only be recoloured with a filter. */
+html.dark img[usemap] { filter: invert(0.88) hue-rotate(180deg); }

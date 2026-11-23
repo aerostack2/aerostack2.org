@@ -3,6 +3,8 @@
 
 # generated content
 .source
+/public/cppdocs/
+/.cache/
 
 # test & build
 /coverage

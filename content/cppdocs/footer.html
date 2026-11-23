@@ -1,0 +1,49 @@
+<!-- Based on the HTML footer of Doxygen 1.18.0. -->
+<!-- start footer part -->
+<!--BEGIN GENERATE_TREEVIEW-->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    $navpath
+    <li class="footer">$generatedby <a href="https://www.doxygen.org/index.html">Doxygen</a> $doxygenversion</li>
+  </ul>
+</div>
+<!--END GENERATE_TREEVIEW-->
+<!--BEGIN !GENERATE_TREEVIEW-->
+<hr class="footer"/><address class="footer"><small>$generatedby <a href="https://www.doxygen.org/index.html">Doxygen</a> $doxygenversion</small></address>
+</div><!-- doc-content -->
+<!--END !GENERATE_TREEVIEW-->
+<script type="text/javascript">
+document.getElementById("as2-theme").addEventListener("click", function () {
+  var dark = document.documentElement.classList.toggle("dark");
+  // Same key as the main site, so the choice carries across both.
+  try { localStorage.setItem("theme", dark ? "dark" : "light"); } catch (e) {}
+});
+
+(function () {
+  var select = document.getElementById("as2-version");
+  var path = location.pathname.split("/"); // ["", "cppdocs", version, ...page]
+  var page = path.slice(3).join("/");
+
+  fetch("/cppdocs/versions.json").then(function (response) {
+    return response.json();
+  }).then(function (versions) {
+    Object.keys(versions).forEach(function (version) {
+      select.add(new Option(version, version));
+    });
+    select.value = path[2];
+    select.hidden = false;
+  });
+
+  // Stays on the same page when the other version has it.
+  select.addEventListener("change", function () {
+    var root = "/cppdocs/" + select.value + "/";
+    fetch(root + page, { method: "HEAD" }).then(function (response) {
+      location.href = response.ok ? root + page + location.hash : root;
+    }, function () {
+      location.href = root;
+    });
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+# Paths are relative to the repository root, where scripts/build-cppdocs.sh runs.
+PROJECT_NAME           = Aerostack2
+PROJECT_NUMBER         = $(CPPDOCS_VERSION)
+PROJECT_BRIEF          = "C++ API"
+OUTPUT_DIRECTORY       = public
+HTML_OUTPUT            = cppdocs/$(CPPDOCS_VERSION)
+HTML_PROJECT_COOKIE    = as2-cppdocs-$(CPPDOCS_VERSION)
+INPUT                  = $(CPPDOCS_INPUT)
+STRIP_FROM_PATH        = $(CPPDOCS_INPUT)
+STRIP_FROM_INC_PATH    = $(CPPDOCS_INPUT)
+RECURSIVE              = YES
+FILE_PATTERNS          = *.hpp *.h
+EXCLUDE_PATTERNS       = */test/* */tests/* */thirdparty/* */third_party/* */build/*
+
+# Upstream documents only about half of its public methods.
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = NO
+SOURCE_BROWSER         = NO
+
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+GENERATE_XML           = NO
+HAVE_DOT               = NO
+QUIET                  = YES
+WARNINGS               = NO
+WARN_IF_UNDOCUMENTED   = NO
+WARN_IF_INCOMPLETE_DOC = NO
+
+HTML_HEADER            = content/cppdocs/header.html
+HTML_FOOTER            = content/cppdocs/footer.html
+HTML_EXTRA_STYLESHEET  = content/cppdocs/theme.css
+HTML_EXTRA_FILES       = src/app/og/fonts/IBMPlexSans-Regular.ttf \
+                         src/app/og/fonts/IBMPlexMono-Regular.ttf \
+                         src/app/og/fonts/IBMPlexSerif-Regular.ttf
+# The only style that keeps CSS variables. theme.css overrides them, and the
+# site's theme drives dark mode through header.html.
+HTML_COLORSTYLE        = AUTO_LIGHT
+GENERATE_TREEVIEW      = YES
+DISABLE_INDEX          = YES
+FULL_SIDEBAR           = NO
+SEARCHENGINE           = YES
+SERVER_BASED_SEARCH    = NO
